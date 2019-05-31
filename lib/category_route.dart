@@ -99,26 +99,31 @@ class _CategoryRouteState extends State<CategoryRoute> {
   @override
   Widget build(BuildContext context) {
 
-    final backgroundColor = Colors.greenAccent[100];
+//    final backgroundColor = Colors.greenAccent[100];
+
     // TODO: Create a list view of the Categories
     final listView = Container(
-      color: backgroundColor,
       padding: EdgeInsets.symmetric(horizontal: 8.0),
+      color: Theme.of(context).backgroundColor,
       child: _buildCategoryWidgets(categories, MediaQuery.of(context).orientation),
     );
 
     // TODO: Create an App Bar
     final appBar = AppBar(
+      textTheme: Theme.of(context).textTheme.apply(
+        bodyColor: Colors.deepOrangeAccent,
+        displayColor: Colors.lightGreenAccent,
+      ),
       title: Text(
         'Unit Converter',
         style: TextStyle(
-          color: Colors.black,
-          fontSize: 30.0,
+          color: Theme.of(context).backgroundColor,
+          fontSize: Theme.of(context).textTheme.headline.fontSize,
         ),
       ),
       centerTitle: true,
       elevation: 0.0,
-      backgroundColor: backgroundColor,
+      backgroundColor: Theme.of(context).primaryColor,
     );
 
     return Scaffold(

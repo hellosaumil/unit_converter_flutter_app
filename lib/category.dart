@@ -53,16 +53,14 @@ class Category extends StatelessWidget {
                 padding: const EdgeInsets.all(16.0),
                 child: Icon(
                   this.tileIcon,
-                  size: 60.0,
+                  size: 40.0,
                 ),
               ),
               Center(
                   child: Text(
                     this.tileName,
                     textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 24.0,
-                    ),
+                    style: Theme.of(context).textTheme.title,
                   )),
             ],
           ),
@@ -79,7 +77,10 @@ class Category extends StatelessWidget {
               elevation: 0.0,
               title: Text(
                 tileName,
-                style: Theme.of(context).textTheme.headline,
+                style: TextStyle(
+                  fontSize: Theme.of(context).textTheme.headline.fontSize,
+                  color: Theme.of(context).backgroundColor,
+                ),
               ),
               centerTitle: true,
               backgroundColor: tileColor,

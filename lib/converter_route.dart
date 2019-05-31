@@ -32,17 +32,17 @@ class _ConverterRouteState extends State<ConverterRoute> {
           children: <Widget>[
             Text(
               unit.unitName,
-              style: Theme
-                  .of(context)
-                  .textTheme
-                  .headline,
+              style: TextStyle(
+                fontSize: Theme.of(context).textTheme.headline.fontSize,
+                color: Theme.of(context).backgroundColor,
+              ),
             ),
             Text(
               'Conversion: ${unit.conversionValue}',
-              style: Theme
-                  .of(context)
-                  .textTheme
-                  .subhead,
+              style: TextStyle(
+                fontSize: Theme.of(context).textTheme.subhead.fontSize,
+                color: Theme.of(context).backgroundColor,
+              ),
             ),
           ],
         ),

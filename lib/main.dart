@@ -9,8 +9,18 @@ class UnitConverterApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+
       theme: ThemeData(
-        primarySwatch: Colors.pink,
+        primarySwatch: Colors.purple,
+        secondaryHeaderColor: Colors.deepOrange,
+        backgroundColor: Colors.white,
+
+        fontFamily: 'Roboto',
+        textTheme: Theme.of(context).textTheme.apply(
+          bodyColor: Colors.purple,
+          displayColor: Colors.purpleAccent,
+        ),
+
       ),
 
       title: 'Unit Converter',
