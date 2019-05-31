@@ -1,6 +1,15 @@
-# unit_converter_flutter
+# Unit Converter App with Flutter
 
 A Unit Converter App created using Flutter by Google as part of Udacity Course UD905 - Build Native Mobile Apps with Flutter
+
+
+# Tasks Completed
+
+	1. Sample App 
+	2. Stateless Widgets
+	3. Routes
+	4. Navigation
+	5. Stateful Widgets
 
 ## Getting Started
 

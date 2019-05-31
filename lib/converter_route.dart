@@ -27,7 +27,7 @@ class _ConverterRouteState extends State<ConverterRoute> {
       return Container(
         color: widget.categoryColor,
         margin: EdgeInsets.all(8.0),
-        padding: EdgeInsets.all(8.0),
+        padding: EdgeInsets.all(16.0),
         child: Column(
           children: <Widget>[
             Text(
