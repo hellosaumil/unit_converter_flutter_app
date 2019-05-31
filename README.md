@@ -1,6 +1,6 @@
 # unit_converter_flutter
 
-A new Flutter application for Unit Conversion.
+A Unit Converter App created using Flutter by Google as part of Udacity Course UD905 - Build Native Mobile Apps with Flutter
 
 ## Getting Started
 
