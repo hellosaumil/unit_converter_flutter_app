@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+// @required is defined in the meta.dart package
 import 'package:meta/meta.dart';
 
 import 'package:unit_converter_flutter/converter_route.dart';
@@ -10,7 +11,7 @@ final _borderRadius = BorderRadius.circular(_tileHeight / 2);
 class Category extends StatelessWidget {
   final String tileName;
   final IconData tileIcon;
-  final Color tileColor;
+  final ColorSwatch tileColor;
   final List<Unit> units;
 
   // Creates a [Category].
@@ -30,7 +31,7 @@ class Category extends StatelessWidget {
   })  : assert(tileName != null),
         assert(tileIcon != null),
         assert(tileColor != null),
-        assert(units!= null),
+        assert(units != null),
         super(key: key);
 
   @override
@@ -41,11 +42,9 @@ class Category extends StatelessWidget {
         height: _tileHeight,
         child: InkWell(
           borderRadius: _borderRadius,
-          splashColor: this.tileColor,
-          highlightColor: this.tileColor,
-
+          splashColor: this.tileColor["splash"],
+          highlightColor: this.tileColor["highlight"],
           onTap: () => _naviageToConverter(context),
-
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
@@ -58,10 +57,10 @@ class Category extends StatelessWidget {
               ),
               Center(
                   child: Text(
-                    this.tileName,
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.headline,
-                  )),
+                this.tileName,
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.headline,
+              )),
             ],
           ),
         ),
@@ -70,25 +69,30 @@ class Category extends StatelessWidget {
   }
 
   void _naviageToConverter(BuildContext context) {
-    Navigator.of(context).push(MaterialPageRoute(
+    Navigator.of(context).push(
+      MaterialPageRoute<Null>(
         builder: (BuildContext context) {
           return Scaffold(
             appBar: AppBar(
-              elevation: 0.0,
+              elevation: 1.0,
               title: Text(
                 tileName,
                 style: TextStyle(
-                  fontSize: Theme.of(context).textTheme.headline.fontSize,
-                  color: Theme.of(context).backgroundColor,
+                  fontSize: Theme.of(context).textTheme.display1.fontSize,
                 ),
               ),
               centerTitle: true,
               backgroundColor: tileColor,
             ),
-            body: ConverterRoute(units, tileName, tileColor),
+            body: ConverterRoute(
+              categoryColor: tileColor,
+              categoryName: tileName,
+              units: units,
+            ),
+            resizeToAvoidBottomPadding: false,
           );
         },
-    ),
+      ),
     );
   }
 }
