@@ -6,26 +6,22 @@ import 'package:unit_converter_flutter/category.dart';
 
 const _padding = EdgeInsets.all(16.0);
 
-class ConverterRoute extends StatefulWidget {
-  final String categoryName;
-  final ColorSwatch categoryColor;
-  final List<Unit> units;
+/// [UnitConverter] where users can input amounts to convert in one [Unit]
+/// and retrieve the conversion in another [Unit] for a specific [Category].
+class UnitConverter extends StatefulWidget {
+  /// The current [Category] for unit conversion.
+  final Category category;
 
-  const ConverterRoute(
-      {@required this.units,
-      @required this.categoryName,
-      @required this.categoryColor})
-      : assert(units != null),
-        assert(categoryName != null),
-        assert(categoryColor != null);
+  /// This [UnitConverter] takes in a [Category] with [Units]. It can't be null.
+  const UnitConverter({
+    @required this.category,
+  }) : assert(category != null);
 
   @override
-  State<StatefulWidget> createState() => _ConverterRouteState();
+  _UnitConverterState createState() => _UnitConverterState();
 }
 
-class _ConverterRouteState extends State<ConverterRoute> {
-  // TODO: Set some variables, such as for keeping track of the user's
-  //  input value and units
+class _UnitConverterState extends State<UnitConverter> {
   Unit _fromValue;
   Unit _toValue;
   double _inputValue;
@@ -33,17 +29,17 @@ class _ConverterRouteState extends State<ConverterRoute> {
   List<DropdownMenuItem> _unitMenuItems;
   bool _showValidationError = false;
 
-  // TODO: Add other helper functions. We've given you one, _format()
   void _setDefaults() {
     setState(() {
-      _fromValue = widget.units[0];
-      _toValue = widget.units[1];
+      _fromValue = widget.category.units[0];
+      _toValue = widget.category.units[1];
     });
   }
 
   void _createDropdownMenuItems() {
     var newItems = <DropdownMenuItem>[];
-    for (var unit in widget.units) {
+    for (var unit in widget.category.units) {
+      print('\t${unit.unitName}');
       newItems.add(DropdownMenuItem(
         value: unit.unitName,
         child: Container(
@@ -107,7 +103,7 @@ class _ConverterRouteState extends State<ConverterRoute> {
   }
 
   Unit _getUnit(String unitName) {
-    return widget.units.firstWhere(
+    return widget.category.units.firstWhere(
       (Unit unit) {
         return unit.unitName == unitName;
       },
@@ -165,7 +161,6 @@ class _ConverterRouteState extends State<ConverterRoute> {
     );
   }
 
-  // TODO: Determine whether you need to override anything, such as initState()
   @override
   void initState() {
     super.initState();
@@ -173,9 +168,19 @@ class _ConverterRouteState extends State<ConverterRoute> {
     _setDefaults();
   }
 
+  // TODO: Most Important Thing
+  @override
+  void didUpdateWidget(UnitConverter old) {
+    super.didUpdateWidget(old);
+    // We update our [DropdownMenuItem] units when we switch [Categories].
+    if (old.category != widget.category) {
+      _createDropdownMenuItems();
+      _setDefaults();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-
     final input = Padding(
       padding: _padding,
       child: Column(
@@ -185,12 +190,13 @@ class _ConverterRouteState extends State<ConverterRoute> {
           // accepts numbers and calls the onChanged property on update.
           // You can read more about it here: https://flutter.io/text-input
           TextField(
+            autofocus: true,
             style: TextStyle(
               fontSize: Theme.of(context).textTheme.display1.fontSize,
               fontWeight: FontWeight.w500,
-              color: widget.categoryColor['splash'],
+              color: widget.category.tileColor['splash'],
             ),
-            cursorColor: widget.categoryColor['splash'],
+            cursorColor: widget.category.tileColor['splash'],
             decoration: InputDecoration(
               labelStyle: Theme.of(context).textTheme.display1,
               errorText: _showValidationError ? 'Invalid number entered' : null,
@@ -261,4 +267,3 @@ class _ConverterRouteState extends State<ConverterRoute> {
     );
   }
 }
-

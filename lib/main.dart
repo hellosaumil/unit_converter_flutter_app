@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:unit_converter_flutter/category_route.dart';
 
+/// The function that is called when main.dart is run.
 void main() => runApp(UnitConverterApp());
 
+/// This widget is the root of our application.
+///
+/// The first screen we see is a list [Categories], each of which
+/// has a list of [Unit]s.
 class UnitConverterApp extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

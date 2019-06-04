@@ -11,6 +11,7 @@ A Unit Converter App created using Flutter by Google as part of Udacity Course U
 	4. Navigation
 	5. Stateful Widgets
 	6. Inputs
+	7. Backdrop
 
 ## Getting Started
 

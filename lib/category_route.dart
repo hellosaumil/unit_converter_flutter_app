@@ -1,7 +1,20 @@
 import 'package:flutter/material.dart';
 
+import 'package:unit_converter_flutter/backdrop.dart';
+
 import 'package:unit_converter_flutter/category.dart';
+import 'package:unit_converter_flutter/category_tile.dart';
+
 import 'package:unit_converter_flutter/unit.dart';
+import 'package:unit_converter_flutter/unit_converter.dart';
+
+/// Category Route (screen).
+///
+/// This is the 'home' screen of the Unit Converter. It shows a header and
+/// a list of [Categories].
+///
+/// While it is named CategoryRoute, a more apt name would be CategoryScreen,
+/// because it is responsible for the UI at the route's destination.
 
 final _backgroundColor = Colors.green[100];
 
@@ -9,12 +22,14 @@ class CategoryRoute extends StatefulWidget {
   const CategoryRoute();
 
   @override
-  State<StatefulWidget> createState() => _CategoryRouteState();
+  _CategoryRouteState createState() => _CategoryRouteState();
 }
 
 class _CategoryRouteState extends State<CategoryRoute> {
   /// Key Lists
-  final categories = <Category>[];
+  Category _defaultCategory;
+  Category _currentCategory;
+  final _categories = <Category>[];
 
   static const _categoryNames = <String>[
     'Length',
@@ -85,7 +100,7 @@ class _CategoryRouteState extends State<CategoryRoute> {
     }),
   ];
 
-  // TODO: Returns a list of mock [Unit]s.
+  /// Returns a list of mock [Unit]s.
   List<Unit> _retrieveUnitList(String categoryName) {
     return List.generate(5, (int i) {
       i += 1;
@@ -97,51 +112,76 @@ class _CategoryRouteState extends State<CategoryRoute> {
     });
   }
 
+  /// Function to call when a [Category] is tapped.
+  void _onCategoryTap(Category category) {
+    setState(() {
+      _currentCategory = category;
+    });
+
+    print('Inside _onCategoryTap...with ${category.tileName} '
+        'with \n_currentCategory = ${_currentCategory.tileName}');
+  }
+
   /// Makes the correct number of rows for the list view.
   ///
   /// For portrait, we construct a [ListView] from the list of category widgets.
-  Widget _buildCategoryWidgets(
-      List<Widget> categories, Orientation deviceOrientation) {
-    if (deviceOrientation == Orientation.portrait) {
-      return ListView.builder(
-        itemBuilder: (BuildContext context, int index) => categories[index],
-        itemCount: categories.length,
-      );
-    } else {
-      return GridView.count(
-        crossAxisCount: 2,
-        childAspectRatio: 3.0,
-        children: categories,
-      );
-    }
+  Widget _buildCategoryWidgets(Orientation deviceOrientation) {
+    return ListView.builder(
+      itemBuilder: (BuildContext context, int index) {
+        return CategoryTile(
+          category: _categories[index],
+          onTap: _onCategoryTap,
+        );
+      },
+      itemCount: _categories.length,
+    );
   }
+
+//  Widget _buildCategoryWidgets(Orientation deviceOrientation) {
+////    if (deviceOrientation == Orientation.portrait) {
+//    return ListView.builder(
+//      itemBuilder: (BuildContext context, int index) {
+//        return CategoryTile(
+//          category: _categories[index],
+//          onTap: _onCategoryTap,
+//        );
+//      },
+//      itemCount: _categories.length,
+//    );
+////    }
+//    else {
+//      return GridView.builder(gridDelegate: null, itemBuilder: null).count(
+//        crossAxisCount: 2,
+//        childAspectRatio: 3.0,
+//        children: categories[index] as List<Widget>,
+//      );
+//    }
+//  }
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-
-    // TODO: Append Category data to categories
     for (var i = 0; i < _categoryNames.length; i++) {
-      print(_categoryNames[i]);
-      categories.add(Category(
+      var category = Category(
         tileName: _categoryNames[i],
-        tileIcon: _categoryIcons[i],
         tileColor: _baseColors[i],
+        tileIcon: _categoryIcons[i],
         units: _retrieveUnitList(_categoryNames[i]),
-      ));
+      );
+      if (i == 0) {
+        _defaultCategory = category;
+      }
+      _categories.add(category);
     }
   }
 
-  // TODO: implement build
   @override
   Widget build(BuildContext context) {
-    // TODO: Create a list view of the Categories
+    /// Create a list view of the Categories
     final listViewOfCategories = Container(
       padding: EdgeInsets.symmetric(horizontal: 8.0),
-      color: _backgroundColor,
-      child:
-          _buildCategoryWidgets(categories, MediaQuery.of(context).orientation),
+//      color: _backgroundColor,
+      child: _buildCategoryWidgets(MediaQuery.of(context).orientation),
     );
 
     // TODO: Create an App Bar
@@ -157,9 +197,43 @@ class _CategoryRouteState extends State<CategoryRoute> {
       elevation: 10.0,
     );
 
-    return Scaffold(
-      appBar: appBar,
-      body: listViewOfCategories,
+//    return Scaffold(
+//      appBar: appBar,
+//      body: listViewOfCategories,
+//    );
+
+    return Backdrop(
+      currentCategory:
+          _currentCategory == null ? _defaultCategory : _currentCategory,
+      frontPanel: _currentCategory == null
+          ? UnitConverter(category: _defaultCategory)
+          : UnitConverter(category: _currentCategory),
+      backPanel: listViewOfCategories,
+      frontTitle: Padding(
+        padding: EdgeInsets.only(
+          top: 16.0,
+          bottom: 16.0,
+        ),
+        child: Text(
+          'Unit Converter',
+          style: TextStyle(
+            fontSize: Theme.of(context).textTheme.headline.fontSize,
+          ),
+        ),
+      ),
+      backTitle: Padding(
+        padding: EdgeInsets.only(
+          top: 10.0,
+          bottom: 4.0,
+        ),
+        child: Text(
+          'Select a Category',
+          style: TextStyle(
+            fontSize: Theme.of(context).textTheme.display1.fontSize,
+          ),
+        ),
+      ),
     );
+
   }
 }
