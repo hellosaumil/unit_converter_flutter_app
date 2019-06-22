@@ -125,20 +125,7 @@ class _CategoryRouteState extends State<CategoryRoute> {
   /// Makes the correct number of rows for the list view.
   ///
   /// For portrait, we construct a [ListView] from the list of category widgets.
-  Widget _buildCategoryWidgets(Orientation deviceOrientation) {
-    return ListView.builder(
-      itemBuilder: (BuildContext context, int index) {
-        return CategoryTile(
-          category: _categories[index],
-          onTap: _onCategoryTap,
-        );
-      },
-      itemCount: _categories.length,
-    );
-  }
-
 //  Widget _buildCategoryWidgets(Orientation deviceOrientation) {
-////    if (deviceOrientation == Orientation.portrait) {
 //    return ListView.builder(
 //      itemBuilder: (BuildContext context, int index) {
 //        return CategoryTile(
@@ -148,15 +135,32 @@ class _CategoryRouteState extends State<CategoryRoute> {
 //      },
 //      itemCount: _categories.length,
 //    );
-////    }
-//    else {
-//      return GridView.builder(gridDelegate: null, itemBuilder: null).count(
-//        crossAxisCount: 2,
-//        childAspectRatio: 3.0,
-//        children: categories[index] as List<Widget>,
-//      );
-//    }
 //  }
+
+  Widget _buildCategoryWidgets(Orientation deviceOrientation) {
+    if (deviceOrientation == Orientation.portrait) {
+      return ListView.builder(
+        itemBuilder: (BuildContext context, int index) {
+          return CategoryTile(
+            category: _categories[index],
+            onTap: _onCategoryTap,
+          );
+        },
+        itemCount: _categories.length,
+      );
+    } else {
+      return GridView.count(
+        crossAxisCount: 2,
+        childAspectRatio: 3.0,
+        children: _categories.map((Category c) {
+          return CategoryTile(
+            category: c,
+            onTap: _onCategoryTap,
+          );
+        }).toList(),
+      );
+    }
+  }
 
   @override
   void initState() {
@@ -179,7 +183,7 @@ class _CategoryRouteState extends State<CategoryRoute> {
   Widget build(BuildContext context) {
     /// Create a list view of the Categories
     final listViewOfCategories = Container(
-      padding: EdgeInsets.symmetric(horizontal: 8.0),
+      padding: EdgeInsets.symmetric(horizontal: 32.0),
 //      color: _backgroundColor,
       child: _buildCategoryWidgets(MediaQuery.of(context).orientation),
     );
@@ -234,6 +238,5 @@ class _CategoryRouteState extends State<CategoryRoute> {
         ),
       ),
     );
-
   }
 }

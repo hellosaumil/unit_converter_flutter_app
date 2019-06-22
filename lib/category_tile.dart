@@ -37,10 +37,10 @@ class CategoryTile extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               Padding(
-                padding: const EdgeInsets.all(16.0),
+                padding: const EdgeInsets.fromLTRB(8.0, 10.0, 20.0, 10.0),
                 child: Icon(
                   this.category.tileIcon,
-                  size: 40.0,
+                  size: 50.0,
                 ),
               ),
               Center(
