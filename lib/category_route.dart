@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 
 import 'package:unit_converter_flutter/backdrop.dart';
@@ -31,16 +33,16 @@ class _CategoryRouteState extends State<CategoryRoute> {
   Category _currentCategory;
   final _categories = <Category>[];
 
-  static const _categoryNames = <String>[
-    'Length',
-    'Area',
-    'Volume',
-    'Mass',
-    'Time',
-    'Digital Storage',
-    'Energy',
-    'Currency',
-  ];
+//  static const _categoryNames = <String>[
+//    'Length',
+//    'Area',
+//    'Volume',
+//    'Mass',
+//    'Time',
+//    'Digital Storage',
+//    'Energy',
+//    'Currency',
+//  ];
 
   static const _categoryIcons = <IconData>[
     Icons.linear_scale,
@@ -100,18 +102,6 @@ class _CategoryRouteState extends State<CategoryRoute> {
     }),
   ];
 
-  /// Returns a list of mock [Unit]s.
-  List<Unit> _retrieveUnitList(String categoryName) {
-    return List.generate(5, (int i) {
-      i += 1;
-
-      return Unit(
-        unitName: '$categoryName Unit $i',
-        conversionValue: i.toDouble(),
-      );
-    });
-  }
-
   /// Function to call when a [Category] is tapped.
   void _onCategoryTap(Category category) {
     setState(() {
@@ -162,31 +152,111 @@ class _CategoryRouteState extends State<CategoryRoute> {
     }
   }
 
+  ///Remove the overriding of initState(). Instead, we can
+  /// wait for our JSON asset to be loaded in (async).
   @override
-  void initState() {
-    super.initState();
-    for (var i = 0; i < _categoryNames.length; i++) {
-      var category = Category(
-        tileName: _categoryNames[i],
-        tileColor: _baseColors[i],
-        tileIcon: _categoryIcons[i],
-        units: _retrieveUnitList(_categoryNames[i]),
-      );
-      if (i == 0) {
-        _defaultCategory = category;
-      }
-      _categories.add(category);
+  Future<void> didChangeDependencies() async {
+    super.didChangeDependencies();
+    // We have static unit conversions located in our
+    // assets/data/regular_units.json
+    if (_categories.isEmpty) {
+      await _retrieveLocalCategories();
     }
   }
+
+  /// Retrieves a list of [Categories] and their [Unit]s
+  Future<void> _retrieveLocalCategories() async {
+    // Consider omitting the types for local variables. For more details on Effective
+    // Dart Usage, see https://www.dartlang.org/guides/language/effective-dart/usage
+    final json = DefaultAssetBundle.of(context)
+        .loadString('assets/data/regular_units.json');
+    final data = JsonDecoder().convert(await json);
+    if (data is! Map) {
+      throw ('Data retrieved from API is not a Map');
+    }
+
+    /// Create Categories and their list of Units, from the JSON asset
+    var categoryIndex = 0;
+    data.keys.forEach((key) {
+      final List<Unit> units =
+          data[key].map<Unit>((dynamic data) => Unit.fromJSON(data)).toList();
+
+      var category = Category(
+        tileName: key,
+        units: units,
+        tileColor: _baseColors[categoryIndex],
+        tileIcon: _categoryIcons[categoryIndex],
+      );
+      setState(() {
+        if (categoryIndex == 0) {
+          _defaultCategory = category;
+        }
+        _categories.add(category);
+      });
+      categoryIndex += 1;
+    });
+  }
+
+//  /// Returns a list of mock [Unit]s.
+//  List<Unit> _retrieveUnitList(String categoryName) {
+//    return List.generate(5, (int i) {
+//      i += 1;
+//
+//      return Unit(
+//        unitName: '$categoryName Unit $i',
+//        conversionValue: i.toDouble(),
+//      );
+//    });
+//  }
+
+//  void initState() {
+//    super.initState();
+//    for (var i = 0; i < _categoryNames.length; i++) {
+//      var category = Category(
+//        tileName: _categoryNames[i],
+//        tileColor: _baseColors[i],
+//        tileIcon: _categoryIcons[i],
+//        units: _retrieveUnitList(_categoryNames[i]),
+//      );
+//      if (i == 0) {
+//        _defaultCategory = category;
+//      }
+//      _categories.add(category);
+//    }
+//  }
 
   @override
   Widget build(BuildContext context) {
     /// Create a list view of the Categories
-    final listViewOfCategories = Container(
-      padding: EdgeInsets.symmetric(horizontal: 32.0),
-//      color: _backgroundColor,
+    if (_categories.isEmpty) {
+      return Center(
+        child: Container(
+          height: 180.0,
+          width: 180.0,
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
+
+    // Based on the device size, figure out how to best lay out the list
+    // You can also use MediaQuery.of(context).size to calculate the orientation
+    assert(debugCheckHasMediaQuery(context));
+    final listViewOfCategories = Padding(
+      padding: EdgeInsets.only(
+        left: 8.0,
+        right: 8.0,
+        bottom: 48.0,
+      ),
       child: _buildCategoryWidgets(MediaQuery.of(context).orientation),
     );
+
+//  Widget build(BuildContext context) {
+//    /// Create a list view of the Categories
+//    final listViewOfCategories = Container(
+//      padding: EdgeInsets.symmetric(horizontal: 32.0),
+////      color: _backgroundColor,
+//      child: _buildCategoryWidgets(MediaQuery.of(context).orientation),
+//    );
 
     // TODO: Create an App Bar
     final appBar = AppBar(

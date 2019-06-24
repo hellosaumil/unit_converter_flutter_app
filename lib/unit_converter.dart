@@ -207,8 +207,8 @@ class _UnitConverterState extends State<UnitConverter> {
                 borderRadius: BorderRadius.circular(0.0),
               ),
             ),
-            // Since we only want numerical input, we use a number keyboard. There
-            // are also other keyboards for dates, emails, phone numbers, etc.
+            /// Since we only want numerical input, we use a number keyboard. There
+            /// are also other keyboards for dates, emails, phone numbers, etc.
             keyboardType: TextInputType.number,
             onChanged: _updateInputValue,
           ),
@@ -261,7 +261,7 @@ class _UnitConverterState extends State<UnitConverter> {
     );
 //    return sampleListView();
 
-    // Based on the orientation of the parent widget, figure out how to best
+    /// Based on the orientation of the parent widget, figure out how to best
     // lay out our converter.
     return Padding(
       padding: _padding,
