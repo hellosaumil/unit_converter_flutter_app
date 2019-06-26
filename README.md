@@ -20,8 +20,8 @@ A Unit Converter App created using Flutter by Google as part of Udacity Course U
 
 ## Description
 
-This project was created as part of the course **Build Native Mobile Apps with Flutter by Udacity** - Udacity ud905.
-Course URL: [Build Native Mobile Apps with Flutter by Udacity](https://www.udacity.com/course/build-native-mobile-apps-with-flutter--ud905)
+This project was created as part of the course **Build Native Mobile Apps with Flutter by Google** - Udacity ud905.
+Course URL: [Build Native Mobile Apps with Flutter by Google](https://www.udacity.com/course/build-native-mobile-apps-with-flutter--ud905)
 
 ## More Info
 
