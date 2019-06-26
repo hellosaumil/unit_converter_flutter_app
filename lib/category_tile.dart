@@ -38,10 +38,17 @@ class CategoryTile extends StatelessWidget {
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.fromLTRB(8.0, 10.0, 20.0, 10.0),
-                child: Icon(
-                  this.category.tileIcon,
-                  size: 50.0,
+                child: Image.asset(
+                  category.tileIcon,
+                  width: 50,
+                  height: 50,
                 ),
+
+//                child: Icon(
+//                  this.category.tileIcon,
+//                  size: 50.0,
+//                ),
+
               ),
               Center(
                   child: Text(

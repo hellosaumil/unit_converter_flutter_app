@@ -44,15 +44,26 @@ class _CategoryRouteState extends State<CategoryRoute> {
 //    'Currency',
 //  ];
 
-  static const _categoryIcons = <IconData>[
-    Icons.linear_scale,
-    Icons.border_all,
-    Icons.calendar_view_day,
-    Icons.details,
-    Icons.access_time,
-    Icons.storage,
-    Icons.battery_charging_full,
-    Icons.attach_money
+//  static const _categoryIcons = <IconData>[
+//    Icons.linear_scale,
+//    Icons.border_all,
+//    Icons.calendar_view_day,
+//    Icons.details,
+//    Icons.access_time,
+//    Icons.storage,
+//    Icons.battery_charging_full,
+//    Icons.attach_money
+//  ];
+
+  static const _categoryIconNames = <String>[
+    'assets/icons/length.png',
+    'assets/icons/area.png',
+    'assets/icons/volume.png',
+    'assets/icons/mass.png',
+    'assets/icons/time.png',
+    'assets/icons/digital_storage.png',
+    'assets/icons/power.png',
+    'assets/icons/currency.png',
   ];
 
   static const _baseColorsPrime = <Color>[
@@ -185,7 +196,7 @@ class _CategoryRouteState extends State<CategoryRoute> {
         tileName: key,
         units: units,
         tileColor: _baseColors[categoryIndex],
-        tileIcon: _categoryIcons[categoryIndex],
+        tileIcon: _categoryIconNames[categoryIndex],
       );
       setState(() {
         if (categoryIndex == 0) {
@@ -303,7 +314,8 @@ class _CategoryRouteState extends State<CategoryRoute> {
         child: Text(
           'Select a Category',
           style: TextStyle(
-            fontSize: Theme.of(context).textTheme.display1.fontSize,
+            fontSize: 30,
+//            fontSize: Theme.of(context).textTheme.display1.fontSize,
           ),
         ),
       ),

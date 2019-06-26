@@ -195,7 +195,7 @@ class _UnitConverterState extends State<UnitConverter> {
             autofocus: true,
             style: TextStyle(
               fontSize: Theme.of(context).textTheme.display1.fontSize,
-              fontWeight: FontWeight.w500,
+              fontWeight: FontWeight.w600,
               color: widget.category.tileColor['splash'],
             ),
             cursorColor: widget.category.tileColor['splash'],

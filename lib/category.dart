@@ -5,7 +5,7 @@ import 'package:unit_converter_flutter/unit.dart';
 
 class Category {
   final String tileName;
-  final IconData tileIcon;
+  final String tileIcon;
   final ColorSwatch tileColor;
   final List<Unit> units;
 
