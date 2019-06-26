@@ -10,6 +10,8 @@ import 'package:unit_converter_flutter/category_tile.dart';
 import 'package:unit_converter_flutter/unit.dart';
 import 'package:unit_converter_flutter/unit_converter.dart';
 
+import 'package:unit_converter_flutter/api.dart';
+
 /// Category Route (screen).
 ///
 /// This is the 'home' screen of the Unit Converter. It shows a header and
@@ -66,16 +68,16 @@ class _CategoryRouteState extends State<CategoryRoute> {
     'assets/icons/currency.png',
   ];
 
-  static const _baseColorsPrime = <Color>[
-    Colors.teal,
-    Colors.orange,
-    Colors.pinkAccent,
-    Colors.blueAccent,
-    Colors.yellow,
-    Colors.greenAccent,
-    Colors.purpleAccent,
-    Colors.red,
-  ];
+//  static const _baseColorsPrime = <Color>[
+//    Colors.teal,
+//    Colors.orange,
+//    Colors.pinkAccent,
+//    Colors.blueAccent,
+//    Colors.yellow,
+//    Colors.greenAccent,
+//    Colors.purpleAccent,
+//    Colors.red,
+//  ];
 
   static const _baseColors = <ColorSwatch>[
     ColorSwatch(0xFF6AB7A8, {
@@ -172,8 +174,10 @@ class _CategoryRouteState extends State<CategoryRoute> {
     // assets/data/regular_units.json
     if (_categories.isEmpty) {
       await _retrieveLocalCategories();
+      await _retrieveApiCategory();
     }
   }
+
 
   /// Retrieves a list of [Categories] and their [Unit]s
   Future<void> _retrieveLocalCategories() async {
@@ -207,6 +211,39 @@ class _CategoryRouteState extends State<CategoryRoute> {
       categoryIndex += 1;
     });
   }
+
+  /// Retrieves a [Category] and its [Unit]s from an API on the web
+  Future<void> _retrieveApiCategory() async {
+    // Add a placeholder while we fetch the Currency category using the API
+    setState(() {
+      _categories.add(Category(
+        tileName: apiCategory['name'],
+        units: [],
+        tileColor: _baseColors.last,
+        tileIcon: _categoryIconNames.last,
+      ));
+    });
+    final api = Api();
+    final jsonUnits = await api.getUnits(apiCategory['route']);
+    // If the API errors out or we have no internet connection, this category
+    // remains in placeholder mode (disabled)
+    if (jsonUnits != null) {
+      final units = <Unit>[];
+      for (var unit in jsonUnits) {
+        units.add(Unit.fromJSON(unit));
+      }
+      setState(() {
+        _categories.removeLast();
+        _categories.add(Category(
+          tileName: apiCategory['name'],
+          units: units,
+          tileColor: _baseColors.last,
+          tileIcon: _categoryIconNames.last,
+        ));
+      });
+    }
+  }
+
 
 //  /// Returns a list of mock [Unit]s.
 //  List<Unit> _retrieveUnitList(String categoryName) {

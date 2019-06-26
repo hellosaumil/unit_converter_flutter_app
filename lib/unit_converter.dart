@@ -121,6 +121,8 @@ class _UnitConverterState extends State<UnitConverter> {
     }
   }
 
+  /// If in the Currency [Category], call the API to retrieve the conversion.
+  /// Remember, the API call is an async function.
   void _updateToConversion(dynamic unitName) {
     setState(() {
       _toValue = _getUnit(unitName);
@@ -235,7 +237,7 @@ class _UnitConverterState extends State<UnitConverter> {
               _convertedValue,
               style: TextStyle(
                 fontSize: Theme.of(context).textTheme.display1.fontSize,
-                fontWeight: FontWeight.w500,
+                fontWeight: FontWeight.w600,
                 color: Colors.black54,
               ),
             ),
