@@ -16,10 +16,13 @@ A Unit Converter App created using Flutter by Google as part of Udacity Course U
 	9. Units (Assets)
 	10. Icons and Fonts (Assets)
 	11. API (HTTP Requests)
+	12. Error Handling
 
-## Getting Started
+## Description
 
-This project is a starting point for a Flutter application.
+This project was created as part of the course **Build Native Mobile Apps with Flutter by Udacity** - Udacity ud905.
+
+## More Info
 
 A few resources to get you started if this is your first Flutter project:
 

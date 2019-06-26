@@ -16,10 +16,14 @@ final _borderRadius = BorderRadius.circular(_tileHeight / 2);
 /// Tapping on it brings you to the unit converter.
 class CategoryTile extends StatelessWidget {
   final Category category;
+  /// You may want to pass in a null onTap when the Currency [Category]
+  /// is in a loading or error state. In build(), you'll want to update the UI
+  /// accordingly.
   final ValueChanged<Category> onTap;
 
-  const CategoryTile({Key key, @required this.category, @required this.onTap})
-      : super(key: key);
+  const CategoryTile({Key key, @required this.category, this.onTap})
+      : assert(category != null),
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +52,6 @@ class CategoryTile extends StatelessWidget {
 //                  this.category.tileIcon,
 //                  size: 50.0,
 //                ),
-
               ),
               Center(
                   child: Text(
